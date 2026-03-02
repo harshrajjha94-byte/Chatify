@@ -1,111 +1,79 @@
-// =======================
-// Firebase Configuration
-// =======================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+// ==============================
+// CHATIFY - chat.js
+// (Firebase baad me add hoga)
+// ==============================
 
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  query,
-  orderBy,
-  onSnapshot,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+// DOM Elements
+const messagesDiv = document.getElementById("messages");
+const messageInput = document.getElementById("messageInput");
 
-// 🔹 Replace with your Firebase config
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "chatify.firebaseapp.com",
-  projectId: "chatify",
-  storageBucket: "chatify.appspot.com",
-  messagingSenderId: "XXXX",
-  appId: "XXXX"
+// TEMP user (baad me Firebase user hoga)
+const currentUser = {
+  id: "user_123",
+  name: "You"
 };
 
-// Init Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+// ==============================
+// Send Message
+// ==============================
+function sendMessage() {
+  const text = messageInput.value.trim();
+  if (!text) return;
 
-// =======================
-// DOM Elements
-// =======================
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const loginBtn = document.getElementById("loginBtn");
-const signupBtn = document.getElementById("signupBtn");
+  const message = {
+    text,
+    senderId: currentUser.id,
+    senderName: currentUser.name,
+    timestamp: new Date().toLocaleTimeString()
+  };
 
-const messageInput = document.getElementById("messageInput");
-const sendBtn = document.getElementById("sendBtn");
-const messagesDiv = document.getElementById("messages");
+  renderMessage(message, true);
+  messageInput.value = "";
+}
 
-// =======================
-// Authentication
-// =======================
-signupBtn.addEventListener("click", async () => {
-  await createUserWithEmailAndPassword(
-    auth,
-    emailInput.value,
-    passwordInput.value
-  );
-});
+// ==============================
+// Render Message
+// ==============================
+function renderMessage(message, isMine) {
+  const div = document.createElement("div");
+  div.classList.add("message");
 
-loginBtn.addEventListener("click", async () => {
-  await signInWithEmailAndPassword(
-    auth,
-    emailInput.value,
-    passwordInput.value
-  );
-});
+  if (isMine) {
+    div.classList.add("my-message");
+  }
 
-// =======================
-// Auth State Listener
-// =======================
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    loadMessages();
+  div.innerHTML = `
+    <div>${message.text}</div>
+    <small style="opacity:0.6">${message.timestamp}</small>
+  `;
+
+  messagesDiv.appendChild(div);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+// ==============================
+// Enter key support
+// ==============================
+messageInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    sendMessage();
   }
 });
 
-// =======================
-// Send Message
-// =======================
-sendBtn.addEventListener("click", async () => {
-  if (!messageInput.value) return;
-
-  await addDoc(collection(db, "messages"), {
-    text: messageInput.value,
-    senderId: auth.currentUser.uid,
-    senderEmail: auth.currentUser.email,
-    timestamp: serverTimestamp()
-  });
-
-  messageInput.value = "";
-});
-
-// =======================
-// Receive Messages (Realtime)
-// =======================
-function loadMessages() {
-  const q = query(
-    collection(db, "messages"),
-    orderBy("timestamp")
-  );
-
-  onSnapshot(q, (snapshot) => {
-    messagesDiv.innerHTML = "";
-    snapshot.forEach((doc) => {
-      const msg = doc.data();
-      const div = document.createElement("div");
-      div.innerHTML = `<b>${msg.senderEmail}:</b> ${msg.text}`;
-      messagesDiv.appendChild(div);
-    });
-  });
+// ==============================
+// Logout
+// ==============================
+function logout() {
+  // Firebase signOut() baad me
+  window.location.href = "index.html";
 }
+
+// ==============================
+// FUTURE FIREBASE NOTES
+// ==============================
+/*
+🔥 Firebase add karte time:
+- sendMessage() me Firestore addDoc()
+- onSnapshot() se messages load
+- currentUser = auth.currentUser
+*/
