@@ -3,43 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CHATIFY – Real Time Chat</title>
-  <style>
-    * { box-sizing: border-box; font-family: Arial, sans-serif; }
-    body { margin: 0; background: #0f172a; color: #fff; }
+  <title>CHATIFY – Welcome</title>
 
-    /* Landing Page */
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #0f172a;
+      color: #fff;
+    }
+
+    /* Landing Layout */
     .landing {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 60px;
-      background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)),
-        url('https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e') center/cover no-repeat;
+      background:
+        linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)),
+        url("https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e")
+        center / cover no-repeat;
     }
 
     .hero {
       max-width: 500px;
     }
 
-    .hero h1 { font-size: 48px; margin-bottom: 10px; }
-    .hero p { font-size: 18px; opacity: .9; }
+    .hero h1 {
+      font-size: 52px;
+      margin-bottom: 10px;
+    }
 
+    .hero p {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    /* Login Card */
     .card {
       background: #020617;
       padding: 30px;
       border-radius: 12px;
       width: 320px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.4);
     }
 
-    .card h2 { text-align: center; margin-bottom: 20px; }
+    .card h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
     .card input {
       width: 100%;
       padding: 10px;
       margin-bottom: 12px;
       border-radius: 6px;
       border: none;
+      outline: none;
     }
 
     .card button {
@@ -51,6 +76,7 @@
       border-radius: 6px;
       cursor: pointer;
       margin-bottom: 10px;
+      font-size: 15px;
     }
 
     .card button.secondary {
@@ -58,54 +84,15 @@
       border: 1px solid #6366f1;
     }
 
-    /* Chat Section */
-    .chat {
-      display: none;
-      height: 100vh;
-      background: #020617;
-      flex-direction: column;
-    }
-
-    .chat-header {
-      padding: 15px;
-      background: #1e293b;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .messages {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-    }
-
-    .input-box {
-      display: flex;
-      padding: 10px;
-      background: #1e293b;
-    }
-
-    .input-box input {
-      flex: 1;
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-    }
-
-    .input-box button {
-      margin-left: 10px;
-      padding: 10px 15px;
-      background: #6366f1;
-      border: none;
-      border-radius: 6px;
-      color: #fff;
+    .card button:hover {
+      opacity: 0.9;
     }
   </style>
 </head>
 <body>
 
   <!-- LANDING PAGE -->
-  <section class="landing" id="landing">
+  <section class="landing">
     <div class="hero">
       <h1>CHATIFY</h1>
       <p>Real-time conversations. Simple. Fast. Secure.</p>
@@ -113,42 +100,26 @@
 
     <div class="card">
       <h2>Email Login</h2>
+
       <input type="email" id="email" placeholder="Email" />
       <input type="password" id="password" placeholder="Password" />
+
       <button onclick="login()">Login</button>
       <button class="secondary" onclick="signup()">Sign Up</button>
     </div>
   </section>
 
-  <!-- CHAT SECTION -->
-  <section class="chat" id="chat">
-    <div class="chat-header">CHATIFY – Global Chat</div>
-    <div class="messages" id="messages"></div>
-    <div class="input-box">
-      <input type="text" id="messageInput" placeholder="Type a message..." />
-      <button onclick="sendMessage()">Send</button>
-    </div>
-  </section>
-
   <script>
-    // TEMP UI LOGIC (Firebase auth connect later)
     function login() {
-      document.getElementById('landing').style.display = 'none';
-      document.getElementById('chat').style.display = 'flex';
+      // Abhi direct redirect
+      // Baad me yahan Firebase auth add karenge
+      window.location.href = "home-page.html";
     }
 
     function signup() {
-      alert('Signup with Firebase Email/Password');
-    }
-
-    function sendMessage() {
-      const input = document.getElementById('messageInput');
-      if (!input.value) return;
-      const div = document.createElement('div');
-      div.textContent = input.value;
-      document.getElementById('messages').appendChild(div);
-      input.value = '';
+      alert("Signup feature coming soon (Firebase)");
     }
   </script>
+
 </body>
 </html>
