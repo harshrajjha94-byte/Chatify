@@ -1,309 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Telegram Style Chat UI</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CHATIFY – Chat</title>
 
-    <!-- ========================= -->
-    <!--        CSS SECTION        -->
-    <!-- ========================= -->
-    <style>
-        /* =========================
-           RESET & GLOBAL STYLES
-        ==========================*/
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Segoe UI", Arial, sans-serif;
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-        body {
-            height: 100vh;
-            background-color: #e5ebf1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    body {
+      margin: 0;
+      background: #020617;
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-        /* =========================
-           MAIN APP CONTAINER
-        ==========================*/
-        .app {
-            width: 95%;
-            height: 95%;
-            background-color: #ffffff;
-            display: flex;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(0,0,0,0.15);
-        }
+    /* Header */
+    .chat-header {
+      background: #1e293b;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        /* =========================
-           SIDEBAR (CHAT LIST)
-        ==========================*/
-        .sidebar {
-            width: 30%;
-            background-color: #f5f5f5;
-            border-right: 1px solid #ddd;
-            display: flex;
-            flex-direction: column;
-        }
+    .chat-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
 
-        .sidebar-header {
-            padding: 15px;
-            background-color: #0088cc;
-            color: #fff;
-            font-size: 20px;
-            font-weight: bold;
-        }
+    .logout-btn {
+      background: #ef4444;
+      border: none;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
 
-        .search-box {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
+    /* Messages */
+    .messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background: #020617;
+    }
 
-        .search-box input {
-            width: 100%;
-            padding: 8px 12px;
-            border-radius: 20px;
-            border: 1px solid #ccc;
-            outline: none;
-        }
+    .message {
+      margin-bottom: 10px;
+      max-width: 70%;
+      padding: 10px;
+      border-radius: 8px;
+      background: #1e293b;
+    }
 
-        .chat-list {
-            flex: 1;
-            overflow-y: auto;
-        }
+    .my-message {
+      background: #6366f1;
+      margin-left: auto;
+    }
 
-        .chat-item {
-            display: flex;
-            padding: 12px;
-            cursor: pointer;
-            transition: background 0.2s;
-            border-bottom: 1px solid #e0e0e0;
-        }
+    /* Input box */
+    .input-box {
+      display: flex;
+      padding: 10px;
+      background: #1e293b;
+    }
 
-        .chat-item:hover {
-            background-color: #e9e9e9;
-        }
+    .input-box input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
 
-        .chat-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background-color: #0088cc;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .chat-info {
-            flex: 1;
-        }
-
-        .chat-info h4 {
-            font-size: 15px;
-            margin-bottom: 4px;
-        }
-
-        .chat-info p {
-            font-size: 13px;
-            color: #666;
-        }
-
-        /* =========================
-           CHAT AREA
-        ==========================*/
-        .chat-area {
-            width: 70%;
-            display: flex;
-            flex-direction: column;
-            background-color: #dfe7ef;
-        }
-
-        .chat-header {
-            padding: 15px;
-            background-color: #0088cc;
-            color: white;
-            font-size: 18px;
-        }
-
-        .messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        /* =========================
-           MESSAGE BUBBLES
-        ==========================*/
-        .message {
-            max-width: 60%;
-            margin-bottom: 12px;
-            padding: 10px 14px;
-            border-radius: 10px;
-            font-size: 14px;
-            line-height: 1.4;
-            word-wrap: break-word;
-        }
-
-        .message.sent {
-            background-color: #cfe9ff;
-            align-self: flex-end;
-            border-bottom-right-radius: 0;
-        }
-
-        .message.received {
-            background-color: #ffffff;
-            align-self: flex-start;
-            border-bottom-left-radius: 0;
-        }
-
-        /* =========================
-           INPUT AREA
-        ==========================*/
-        .input-area {
-            display: flex;
-            padding: 10px;
-            background-color: #f5f5f5;
-            border-top: 1px solid #ccc;
-        }
-
-        .input-area input {
-            flex: 1;
-            padding: 10px 15px;
-            border-radius: 20px;
-            border: 1px solid #ccc;
-            outline: none;
-            font-size: 14px;
-        }
-
-        .input-area button {
-            margin-left: 10px;
-            padding: 10px 18px;
-            border: none;
-            border-radius: 50%;
-            background-color: #0088cc;
-            color: white;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .input-area button:hover {
-            background-color: #0077b3;
-        }
-
-        /* =========================
-           SCROLLBAR STYLING
-        ==========================*/
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #bbb;
-            border-radius: 3px;
-        }
-    </style>
+    .input-box button {
+      margin-left: 10px;
+      padding: 10px 16px;
+      background: #6366f1;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
-<!-- ========================= -->
-<!--        HTML BODY          -->
-<!-- ========================= -->
-<div class="app">
+  <!-- HEADER -->
+  <div class="chat-header">
+    <h2>CHATIFY – Global Chat</h2>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
 
-    <!-- ===== SIDEBAR ===== -->
-    <div class="sidebar">
-        <div class="sidebar-header">Telegram</div>
+  <!-- MESSAGES -->
+  <div class="messages" id="messages"></div>
 
-        <div class="search-box">
-            <input type="text" placeholder="Search">
-        </div>
+  <!-- INPUT -->
+  <div class="input-box">
+    <input
+      type="text"
+      id="messageInput"
+      placeholder="Type a message..."
+    />
+    <button onclick="sendMessage()">Send</button>
+  </div>
 
-        <div class="chat-list">
-            <div class="chat-item" onclick="openChat('Alice')">
-                <div class="chat-avatar">A</div>
-                <div class="chat-info">
-                    <h4>Alice</h4>
-                    <p>Hello!</p>
-                </div>
-            </div>
-
-            <div class="chat-item" onclick="openChat('Bob')">
-                <div class="chat-avatar">B</div>
-                <div class="chat-info">
-                    <h4>Bob</h4>
-                    <p>How are you?</p>
-                </div>
-            </div>
-
-            <div class="chat-item" onclick="openChat('Charlie')">
-                <div class="chat-avatar">C</div>
-                <div class="chat-info">
-                    <h4>Charlie</h4>
-                    <p>See you soon</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== CHAT AREA ===== -->
-    <div class="chat-area">
-        <div class="chat-header" id="chatHeader">Select a chat</div>
-
-        <div class="messages" id="messages"></div>
-
-        <div class="input-area">
-            <input type="text" id="messageInput" placeholder="Type a message">
-            <button onclick="sendMessage()">➤</button>
-        </div>
-    </div>
-</div>
-
-<!-- ========================= -->
-<!--        JAVASCRIPT         -->
-<!-- ========================= -->
-<script>
-    let currentChat = "";
-
-    function openChat(name) {
-        currentChat = name;
-        document.getElementById("chatHeader").innerText = name;
-        document.getElementById("messages").innerHTML = "";
-
-        // Fake welcome message
-        addMessage("Hello from " + name, "received");
-    }
-
+  <script>
+    // TEMP CHAT LOGIC (Firebase baad me)
     function sendMessage() {
-        const input = document.getElementById("messageInput");
-        const text = input.value.trim();
+      const input = document.getElementById("messageInput");
+      if (!input.value.trim()) return;
 
-        if (text === "") return;
+      const div = document.createElement("div");
+      div.classList.add("message", "my-message");
+      div.innerText = input.value;
 
-        addMessage(text, "sent");
-        input.value = "";
+      document.getElementById("messages").appendChild(div);
+      input.value = "";
 
-        // Fake reply
-        setTimeout(() => {
-            addMessage("Auto reply from " + currentChat, "received");
-        }, 1000);
+      // auto scroll
+      div.scrollIntoView({ behavior: "smooth" });
     }
 
-    function addMessage(text, type) {
-        const messages = document.getElementById("messages");
-        const msg = document.createElement("div");
-        msg.className = "message " + type;
-        msg.innerText = text;
-        messages.appendChild(msg);
-        messages.scrollTop = messages.scrollHeight;
+    function logout() {
+      // Baad me Firebase signOut()
+      window.location.href = "index.html";
     }
-</script>
+  </script>
 
 </body>
 </html>
